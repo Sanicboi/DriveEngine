@@ -64,8 +64,11 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{c3a4969b-6d71-4b24-8320-5ab33d420f18}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\D3D12\Basic\Shaders">
-      <UniqueIdentifier>{a833520c-cf10-4310-8eb3-16db08ad0527}</UniqueIdentifier>
+    <Filter Include="Header Files\D3D12\Shaders">
+      <UniqueIdentifier>{21995f90-4847-49f5-9794-00dd4bb361de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\D3D12\Shaders">
+      <UniqueIdentifier>{4202d3b6-992a-4b8c-90df-52bc5528422b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,13 +120,19 @@
     <ClCompile Include="ShaderCompiler.cpp">
       <Filter>Source Files\Compilers</Filter>
     </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\D3D12\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\D3D12\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
+      <Filter>Source Files\D3D12\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="PSO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Fence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,13 +188,19 @@
     <ClInclude Include="RootSignature.h">
       <Filter>Header Files\D3D12\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Header Files\D3D12\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
+      <Filter>Header Files\D3D12\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Header Files\D3D12\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="PSO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PixelShader.h">
+    <ClInclude Include="Fence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

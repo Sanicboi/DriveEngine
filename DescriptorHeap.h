@@ -11,5 +11,6 @@ public:
 	UINT size;
 	bool HasCpu() const;
 	bool HasGpu() const;
+	void ResetCpuHandle(UINT offset);
 };
 

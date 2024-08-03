@@ -34,3 +34,8 @@ bool DescriptorHeap::HasGpu() const
 {
 	return hasGpu;
 }
+
+void DescriptorHeap::ResetCpuHandle(UINT offset = 0)
+{
+	cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(ptr->GetCPUDescriptorHandleForHeapStart(), offset, size);
+}

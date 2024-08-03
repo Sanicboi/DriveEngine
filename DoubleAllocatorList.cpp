@@ -25,6 +25,12 @@ ID3D12GraphicsCommandList7* DoubleAllocatorList::operator->()
 	return list.Get();
 }
 
+
+ID3D12GraphicsCommandList7* DoubleAllocatorList::Get()
+{
+	return list.Get();
+}
+
 void DoubleAllocatorList::Switch(ID3D12PipelineState* pso)
 {
 	current = !current;

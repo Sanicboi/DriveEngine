@@ -144,8 +144,10 @@
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DriveEngine.cpp" />
     <ClCompile Include="DXGIContext.cpp" />
+    <ClCompile Include="Fence.cpp" />
     <ClCompile Include="Hresultable.cpp" />
     <ClCompile Include="PixelShader.cpp" />
+    <ClCompile Include="PSO.cpp" />
     <ClCompile Include="RenderTargetView.cpp" />
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -165,9 +167,11 @@
     <ClInclude Include="DescriptorHeap.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="DXGIContext.h" />
+    <ClInclude Include="Fence.h" />
     <ClInclude Include="Hresultable.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="PSO.h" />
     <ClInclude Include="RenderTargetView.h" />
     <ClInclude Include="RootSignature.h" />
     <ClInclude Include="Shader.h" />
