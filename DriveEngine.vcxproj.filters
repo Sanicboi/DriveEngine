@@ -13,57 +13,188 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Basic">
+      <UniqueIdentifier>{3492f33d-ce2b-4bab-99e0-488f0c273669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\basic">
+      <UniqueIdentifier>{cd0243e5-0e22-4d1f-8270-7556e6150366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DXGI">
+      <UniqueIdentifier>{15df2561-edc8-4ad4-98b3-c5948725178f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DXGI">
+      <UniqueIdentifier>{91f9203e-d69d-43eb-ab16-3633c94d2aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\D3D12">
+      <UniqueIdentifier>{719d9d84-5245-4474-b5b5-fcb4fa5fdf07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\D3D12\Basic">
+      <UniqueIdentifier>{be37a38b-2a8f-49b2-b8ed-a3784592fe06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\D3D12\Advanced">
+      <UniqueIdentifier>{0f58f5ac-72dc-4610-904c-f31307db74e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Windows">
+      <UniqueIdentifier>{08b20653-d6d9-41a6-8da0-4f554b078715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{876b9578-d969-436f-88c3-c85263b986eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\D3D12">
+      <UniqueIdentifier>{27259e23-ea64-451c-bcd6-a57a2b8a9b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\D3D12\Basic">
+      <UniqueIdentifier>{b46a07cb-8640-4f8d-9ef4-3ee3d1bd8b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\D3D12\Advanced">
+      <UniqueIdentifier>{e2576e7c-3c8c-4e2d-a3c3-68dd9fee7a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Windows">
+      <UniqueIdentifier>{b8e09360-c0fc-46b7-bde8-5fd7db5f4640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{120ceac2-49cd-42f5-ac17-7b424c873e6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Compilers">
+      <UniqueIdentifier>{f4ac0f83-b6d5-4363-ae1f-891b5739fd35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Compilers">
+      <UniqueIdentifier>{d9137964-cc42-4a9d-8463-ba8182891116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{c3a4969b-6d71-4b24-8320-5ab33d420f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\D3D12\Basic\Shaders">
+      <UniqueIdentifier>{a833520c-cf10-4310-8eb3-16db08ad0527}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DriveEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DXGIContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Device.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Described.cpp">
+      <Filter>Source Files\basic</Filter>
     </ClCompile>
     <ClCompile Include="Hresultable.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\basic</Filter>
     </ClCompile>
     <ClCompile Include="SinglePtr.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="CommandQueue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Described.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="DXGIContext.cpp">
+      <Filter>Source Files\DXGI</Filter>
     </ClCompile>
     <ClCompile Include="SwapChain.cpp">
+      <Filter>Source Files\DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandAllocator.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandList.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandQueue.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptorHeap.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTargetView.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleAllocatorList.cpp">
+      <Filter>Source Files\D3D12\Advanced</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="RootSignature.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderCompiler.cpp">
+      <Filter>Source Files\Compilers</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DXGIContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Device.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Hresultable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SinglePtr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandQueue.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Basic</Filter>
     </ClInclude>
     <ClInclude Include="Described.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="SinglePtr.h">
+      <Filter>Header Files\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGIContext.h">
+      <Filter>Header Files\DXGI</Filter>
     </ClInclude>
     <ClInclude Include="SwapChain.h">
+      <Filter>Header Files\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandAllocator.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandList.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="DescriptorHeap.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTargetView.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleAllocatorList.h">
+      <Filter>Header Files\D3D12\Advanced</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderCompiler.h">
+      <Filter>Header Files\Compilers</Filter>
+    </ClInclude>
+    <ClInclude Include="RootSignature.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Vertex.hlsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Pixel.hlsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

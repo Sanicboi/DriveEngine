@@ -1,5 +1,6 @@
 #include "Hresultable.h"
 
+
 HRESULT Hresultable::GetHr() const {
 	return hr;
 }

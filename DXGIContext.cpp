@@ -10,3 +10,8 @@ DXGIContext::DXGIContext() {
 IDXGIAdapter4* DXGIContext::Adapter() {
 	return adapter.Get();
 }
+
+IDXGIFactory7* DXGIContext::Factory()
+{
+	return factory.Get();
+}

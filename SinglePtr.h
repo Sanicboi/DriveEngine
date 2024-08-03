@@ -5,6 +5,7 @@ class SinglePtr : public Hresultable
 {
 protected:
 	ComPtr<T> ptr;
+
 public:
 	T** operator&() {
 		return &ptr;
@@ -19,4 +20,3 @@ public:
 		return ptr.Get();
 	}
 };
-

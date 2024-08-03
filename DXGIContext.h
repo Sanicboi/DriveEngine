@@ -9,5 +9,6 @@ private:
 public:
 	DXGIContext();
 	IDXGIAdapter4* Adapter();
+	IDXGIFactory7* Factory();
 };
 
