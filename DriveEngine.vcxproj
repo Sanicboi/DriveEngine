@@ -141,6 +141,7 @@
     <ClCompile Include="ConstantIndexBuffer.cpp" />
     <ClCompile Include="ConstantIndexOrVertexBuffer.cpp" />
     <ClCompile Include="ConstantVertexBuffer.cpp" />
+    <ClCompile Include="DepthStencilBuffer.cpp" />
     <ClCompile Include="DoubleAllocatorList.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Described.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="ConstantIndexBuffer.h" />
     <ClInclude Include="ConstantIndexOrVertexBuffer.h" />
     <ClInclude Include="ConstantVertexBuffer.h" />
+    <ClInclude Include="DepthStencilBuffer.h" />
     <ClInclude Include="DoubleAllocatorList.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="d3dx12.h" />

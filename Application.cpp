@@ -62,8 +62,11 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	psoDesc.PS = { reinterpret_cast<UINT8*>(ps->GetBufferPointer()), ps->GetBufferSize() };
 	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-	psoDesc.DepthStencilState.DepthEnable = FALSE;
+	psoDesc.DepthStencilState.DepthEnable = TRUE;
+	psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 	psoDesc.DepthStencilState.StencilEnable = FALSE;
+	psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	psoDesc.SampleMask = UINT_MAX;
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.NumRenderTargets = 1;
@@ -74,16 +77,27 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	pso = PSO(&psoDesc, device.Get());
 
 	Vertex verts[] = {
-	{ 0.0f, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f  },
-	{ 0.25f, -0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
-	{ -0.25f, -0.25f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f }
+	{ -0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
+	{  0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
+	{ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
+	{  0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
+
+	// second quad (further from camera, green)
+	{ -0.75f,  0.75f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f },
+	{   0.0f,  0.0f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f },
+	{ -0.75f,  0.0f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f },
+	{   0.0f,  0.75f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f }
 	};
 
 	UINT indices[] = {
-	0, 1, 2
+	0, 1, 2, // first triangle
+	0, 3, 1, // second triangle
+	4, 5, 6,
+	4, 7, 5
 	};
 
 	fence = Fence(device.Get());
+	dsBuffer = DepthStencilBuffer(device.Get(), width, height);
 	vertexBuffer = ConstantVertexBuffer(device.Get(), sizeof(verts), sizeof(Vertex));
 	indexBuffer = ConstantIndexBuffer(device.Get(), sizeof(indices));
 
@@ -122,13 +136,14 @@ void Application::OnRender()
 		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 		list->ResourceBarrier(1, &barrier);
 		rtvHeap.ResetCpuHandle(frameIndex);
-		list->OMSetRenderTargets(1, &rtvHeap.cpuHandle, FALSE, NULL);
+		list->OMSetRenderTargets(1, &rtvHeap.cpuHandle, FALSE, &dsBuffer.heap.cpuHandle);
+		list->ClearDepthStencilView(dsBuffer.heap.cpuHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, NULL);
 		const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
 		list->ClearRenderTargetView(rtvHeap.cpuHandle, clearColor, 0, NULL);
 		list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		list->IASetVertexBuffers(0, 1, &vertexBufferView);
 		list->IASetIndexBuffer(&indexBufferView);
-		list->DrawIndexedInstanced(3, 1, 0, 0, 0);
+		list->DrawIndexedInstanced(12, 1, 0, 0, 0);
 		barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 		list->ResourceBarrier(1, &barrier);
 		list->Close();
@@ -174,6 +189,7 @@ void Application::OnResize(UINT w, UINT h)
 		for (int i = 0; i < 3; i++) {
 			renderTargets[i].Reset();
 		}
+		dsBuffer.Resize(device.Get(), w, h);
 		rtvHeap.ResetCpuHandle(0);
 		swapChain->ResizeBuffers(0, w, h, DXGI_FORMAT_UNKNOWN, 0);
 

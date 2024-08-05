@@ -12,6 +12,7 @@
 #include "Fence.h"
 #include "ConstantVertexBuffer.h"
 #include "ConstantIndexBuffer.h"
+#include "DepthStencilBuffer.h"
 
 
 struct Vertex {
@@ -48,8 +49,10 @@ private:
     
     ConstantVertexBuffer vertexBuffer;
     ConstantIndexBuffer indexBuffer;
+    DepthStencilBuffer dsBuffer;
     D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
     D3D12_INDEX_BUFFER_VIEW indexBufferView;
+
 
     bool ready = false;
 public:
