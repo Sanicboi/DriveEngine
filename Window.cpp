@@ -42,5 +42,9 @@ void Window::Show(int param) const
 
 LRESULT WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	if (uMsg == WM_CLOSE) {
+		PostQuitMessage(0);
+		return 0;
+	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }

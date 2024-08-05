@@ -7,4 +7,11 @@ CommandQueue::CommandQueue(ID3D12Device10* device, D3D12_COMMAND_LIST_TYPE type)
 	descriptor.Priority = D3D12_COMMAND_QUEUE_PRIORITY_HIGH;
 	descriptor.Type = type;
 	hr = device->CreateCommandQueue(&descriptor, IID_PPV_ARGS(&ptr));
+	if (Ok()) {
+		ptr->SetName(L"Main Command Queue");
+	}
+}
+
+CommandQueue::~CommandQueue()
+{
 }

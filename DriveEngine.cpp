@@ -12,12 +12,17 @@
 #include "RootSignature.h"
 #include "PSO.h"
 #include "Fence.h"
+#include "ConstantVertexBuffer.h"
 
 
 struct Vertex {
     float x;
     float y;
     float z;
+    float r;
+    float g;
+    float b;
+    float a;
 };
 
 int WINAPI wWinMain(
@@ -27,18 +32,40 @@ int WINAPI wWinMain(
     _In_ int nCmdShow
 ) 
 {
-    OutputDebugStringA("Hello world!\n");
+    CoInitialize(NULL);
+
+
+
+
+
     DXGIContext context;
+
+    #ifdef _DEBUG
+    ComPtr<ID3D12Debug6> debugController;
+    if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+    {
+        debugController->EnableDebugLayer();
+        debugController->SetEnableGPUBasedValidation(TRUE);
+        //debugController->SetEnableSynchronizedCommandQueueValidation(TRUE);
+    }
+
+#endif // _DEBUG
+
     Device device(context.Adapter());
+
+
+
     CommandQueue queue(device.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT);
     Window window(hInstance, L"Drive", 800, 600);
     window.Show(nCmdShow);
     SwapChain swapChain(context.Factory(), queue.Get(), window.GetHWND());
+
     DescriptorHeap rtvHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 3, false, device.Get(), true, false);
     ComPtr<ID3D12Resource2> renderTargets[3];
     std::vector<RenderTargetView> rtvs;
     for (int i = 0; i < 3; i++) {
         swapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargets[i]));
+        renderTargets[i]->SetName(L"Render target");
         rtvs.push_back(
             RenderTargetView(
                 device.Get(),
@@ -56,7 +83,8 @@ int WINAPI wWinMain(
 
     
     D3D12_INPUT_ELEMENT_DESC inputs[] = {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+            { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
     };
 
     D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
@@ -78,29 +106,48 @@ int WINAPI wWinMain(
 
     // TEMP BEGIN
     Vertex verts[] = {
-        { 0.0f, 0.25f, 0.0f  },
-        { 0.25f, -0.25f, 0.0f },
-        { -0.25f, -0.25f, 0.0f }
+        { 0.0f, 0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f  },
+        { 0.25f, -0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+        { -0.25f, -0.25f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f }
     };
-    ComPtr<ID3D12Resource2> vertBuffer;
-    CD3DX12_HEAP_PROPERTIES heapProps(D3D12_HEAP_TYPE_UPLOAD);
-    D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
-    auto desc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(verts));
-    device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_GENERIC_READ, NULL, IID_PPV_ARGS(&vertBuffer));
-    UINT8* pGpuBuf;
-    CD3DX12_RANGE readRange(0, 0);
-    vertBuffer->Map(0, &readRange, reinterpret_cast<void**>(&pGpuBuf));
-    memcpy(pGpuBuf, verts, sizeof(verts));
-    vertBuffer->Unmap(0, NULL);
-    vertexBufferView.BufferLocation = vertBuffer->GetGPUVirtualAddress();
-    vertexBufferView.SizeInBytes = sizeof(verts);
-    vertexBufferView.StrideInBytes = sizeof(Vertex);
+    //ComPtr<ID3D12Resource2> vertBuffer;
+    //CD3DX12_HEAP_PROPERTIES heapProps(D3D12_HEAP_TYPE_UPLOAD);
+    //D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
+    //auto desc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(verts));
+    //device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_GENERIC_READ, NULL, IID_PPV_ARGS(&vertBuffer));
+    //UINT8* pGpuBuf;
+    //CD3DX12_RANGE readRange(0, 0);
+    //vertBuffer->Map(0, &readRange, reinterpret_cast<void**>(&pGpuBuf));
+    //memcpy(pGpuBuf, verts, sizeof(verts));
+    //vertBuffer->Unmap(0, NULL);
+    //vertexBufferView.BufferLocation = vertBuffer->GetGPUVirtualAddress();
+    //vertexBufferView.SizeInBytes = sizeof(verts);
+    //vertexBufferView.StrideInBytes = sizeof(Vertex);
+    Fence fence(device.Get());
+    fence.value++;
+    ConstantVertexBuffer vBuf(device.Get(), sizeof(verts), sizeof(Vertex));
+    vBuf.Copy(device.Get(), list.Get(), reinterpret_cast<BYTE*>(verts));
+    list->Close();
+    D3D12_VERTEX_BUFFER_VIEW view = vBuf.GetView();
+    
+    ID3D12CommandList* ppLists[] = { list.Get() };
+    queue->ExecuteCommandLists(1, ppLists);
+
+    HRESULT hr = queue->Signal(fence.Get(), fence.value);
+
+    if (fence->GetCompletedValue() < fence.value) {
+        fence.SetEvent();
+        WaitForSingleObject(fence.event, INFINITE);
+    }
+
+    vBuf.ReleaseTemp();
+    list.Reset();
 
     // TEMP END
 
     UINT frameIndex = 0;
     
-    Fence fence(device.Get());
+
 
 
     D3D12_VIEWPORT viewport(0.0f, 0.0f, 800.0f, 600.0f);
@@ -108,43 +155,51 @@ int WINAPI wWinMain(
 
 
     MSG msg = {};
-    while (GetMessage(&msg, window.GetHWND(), 0, 0) > 0) {
+    while (GetMessage(&msg, 0/*window.GetHWND()*/, 0, 0) > 0) {
+            fence.value++;
+            list.Switch(pso.Get());
+            list->SetGraphicsRootSignature(rs.Get());
+            list->RSSetViewports(1, &viewport);
+            list->RSSetScissorRects(1, &scissorRect);
+            auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+            list->ResourceBarrier(1, &barrier);
+            rtvHeap.ResetCpuHandle(frameIndex);
+            list->OMSetRenderTargets(1, &rtvHeap.cpuHandle, FALSE, NULL);
+            const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+            list->ClearRenderTargetView(rtvHeap.cpuHandle, clearColor, 0, NULL);
+            list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            list->IASetVertexBuffers(0, 1, &view);
+            list->DrawInstanced(3, 1, 0, 0);
+            barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+            list->ResourceBarrier(1, &barrier);
+            list->Close();
 
-        list.Switch(pso.Get());
-        list->SetGraphicsRootSignature(rs.Get());
-        list->RSSetViewports(1, &viewport);
-        list->RSSetScissorRects(1, &scissorRect);
-        auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-        list->ResourceBarrier(1, &barrier);
-        rtvHeap.ResetCpuHandle(frameIndex);
-        list->OMSetRenderTargets(1, &rtvHeap.cpuHandle, FALSE, NULL);
-        const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
-        list->ClearRenderTargetView(rtvHeap.cpuHandle, clearColor, 0, NULL);
-        list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-        list->IASetVertexBuffers(0, 1, &vertexBufferView);
-        list->DrawInstanced(3, 1, 0, 0);
-        barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-        list->ResourceBarrier(1, &barrier);
-        list->Close();
+            ID3D12CommandList* ppLists[] = { list.Get() };
+            queue->ExecuteCommandLists(1, ppLists);
 
-        ID3D12CommandList* ppLists[] = {list.Get()};
-        queue->ExecuteCommandLists(1, ppLists);
-        
-        HRESULT hr = queue->Signal(fence.Get(), fence.value);
-        
-        if (fence->GetCompletedValue() < fence.value) {
-            fence.SetEvent();
-            WaitForSingleObject(fence.event, INFINITE);
-        }
+            HRESULT hr = queue->Signal(fence.Get(), fence.value);
 
-        fence.value++;
+            if (fence->GetCompletedValue() < fence.value) {
+                fence.SetEvent();
+                WaitForSingleObject(fence.event, INFINITE);
+            }
 
-        swapChain->Present(1, 0);
-        frameIndex = swapChain->GetCurrentBackBufferIndex();
-        list.Reset();
+            
 
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+            swapChain->Present(1, 0);
+            frameIndex = swapChain->GetCurrentBackBufferIndex();
+            list.Reset();
+
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
     }
+    int completed = fence->GetCompletedValue();
+    if (completed < fence.value) {
+        fence.SetEvent();
+        WaitForSingleObject(fence.event, INFINITE);
+    }
+    queue.~CommandQueue();
+    swapChain.~SwapChain();
+    CoUninitialize();
     return 0;
 }

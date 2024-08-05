@@ -40,7 +40,7 @@ HRESULT ShaderCompiler::Compile(LPCWSTR entry, LPCWSTR model, LPCWSTR source, ID
 			ComPtr<IDxcBlobUtf8> errs;
 			result->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&errs), NULL);
 			if (errs->GetStringLength() > 0) {
-				OutputDebugString((LPCWSTR)errs->GetBufferPointer());
+				OutputDebugStringA((LPCSTR)errs->GetBufferPointer());
 				OutputDebugStringA("\n");
 			}
 
