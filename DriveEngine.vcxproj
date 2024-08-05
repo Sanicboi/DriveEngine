@@ -135,8 +135,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="CommandAllocator.cpp" />
     <ClCompile Include="CommandList.cpp" />
+    <ClCompile Include="ConstantIndexBuffer.cpp" />
     <ClCompile Include="ConstantIndexOrVertexBuffer.cpp" />
     <ClCompile Include="ConstantVertexBuffer.cpp" />
     <ClCompile Include="DoubleAllocatorList.cpp" />
@@ -150,18 +152,18 @@
     <ClCompile Include="Hresultable.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PSO.cpp" />
-    <ClCompile Include="RenderTargetView.cpp" />
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="SinglePtr.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="VertexShader.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="CommandAllocator.h" />
     <ClInclude Include="CommandList.h" />
+    <ClInclude Include="ConstantIndexBuffer.h" />
     <ClInclude Include="ConstantIndexOrVertexBuffer.h" />
     <ClInclude Include="ConstantVertexBuffer.h" />
     <ClInclude Include="DoubleAllocatorList.h" />
@@ -176,14 +178,12 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PSO.h" />
-    <ClInclude Include="RenderTargetView.h" />
     <ClInclude Include="RootSignature.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCompiler.h" />
     <ClInclude Include="SinglePtr.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="VertexShader.h" />
-    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Pixel.hlsl">

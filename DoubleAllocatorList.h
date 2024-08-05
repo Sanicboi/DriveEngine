@@ -9,6 +9,7 @@ private:
 	CommandList list;
 	bool current = 0;
 public:
+	using Hresultable::Hresultable;
 	DoubleAllocatorList(ID3D12Device10* device, D3D12_COMMAND_LIST_TYPE type, bool close = false);
 	ID3D12GraphicsCommandList7* operator->();
 	ID3D12GraphicsCommandList7* Get();

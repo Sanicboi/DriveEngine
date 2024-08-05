@@ -105,14 +105,8 @@
     <ClCompile Include="Device.cpp">
       <Filter>Source Files\D3D12\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="RenderTargetView.cpp">
-      <Filter>Source Files\D3D12\Basic</Filter>
-    </ClCompile>
     <ClCompile Include="DoubleAllocatorList.cpp">
       <Filter>Source Files\D3D12\Advanced</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="RootSignature.cpp">
       <Filter>Source Files\D3D12\Basic</Filter>
@@ -129,16 +123,22 @@
     <ClCompile Include="PixelShader.cpp">
       <Filter>Source Files\D3D12\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="PSO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Fence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConstantIndexOrVertexBuffer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\D3D12\Advanced</Filter>
     </ClCompile>
     <ClCompile Include="ConstantVertexBuffer.cpp">
+      <Filter>Source Files\D3D12\Advanced</Filter>
+    </ClCompile>
+    <ClCompile Include="Fence.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="PSO.cpp">
+      <Filter>Source Files\D3D12\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantIndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,14 +173,8 @@
     <ClInclude Include="Device.h">
       <Filter>Header Files\D3D12\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="RenderTargetView.h">
-      <Filter>Header Files\D3D12\Basic</Filter>
-    </ClInclude>
     <ClInclude Include="DoubleAllocatorList.h">
       <Filter>Header Files\D3D12\Advanced</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
       <Filter>Header Files\Misc</Filter>
@@ -203,17 +197,23 @@
     <ClInclude Include="VertexShader.h">
       <Filter>Header Files\D3D12\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="PSO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Fence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantIndexOrVertexBuffer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\D3D12\Advanced</Filter>
     </ClInclude>
     <ClInclude Include="ConstantVertexBuffer.h">
+      <Filter>Header Files\D3D12\Advanced</Filter>
+    </ClInclude>
+    <ClInclude Include="Fence.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="PSO.h">
+      <Filter>Header Files\D3D12\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantIndexBuffer.h">
+      <Filter>Header Files\D3D12\Advanced</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

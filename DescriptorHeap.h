@@ -5,6 +5,7 @@ class DescriptorHeap : public Described<ID3D12DescriptorHeap, D3D12_DESCRIPTOR_H
 private:
 	bool hasGpu, hasCpu;
 public:
+	using Described::Described;
 	DescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors, bool shaderVisible, ID3D12Device10* device, bool createCpuHandle, bool createGpuHandle);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle;
 	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle;

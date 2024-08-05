@@ -9,5 +9,9 @@ public:
 	T GetDescriptor() const {
 		return descriptor;
 	};
+
+	Described() {
+		descriptor = {};
+	}
 };
 

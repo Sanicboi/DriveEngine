@@ -8,3 +8,8 @@ HRESULT Hresultable::GetHr() const {
 bool Hresultable::Ok() const {
 	return SUCCEEDED(hr);
 }
+
+Hresultable::Hresultable()
+{
+	hr = E_NOTIMPL;
+}

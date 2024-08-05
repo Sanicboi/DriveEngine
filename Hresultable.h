@@ -7,5 +7,6 @@ protected:
 public:
 	HRESULT GetHr() const;
 	bool Ok() const;
+	Hresultable();
 };
 

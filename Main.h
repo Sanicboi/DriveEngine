@@ -7,10 +7,15 @@
 #include <vector>
 #include <dxcapi.h>
 #include <d3dcompiler.h>
+#include <string>
 
 #ifdef _DEBUG 
 #include <d3d12sdklayers.h>
 #include <dxgidebug.h>
 #endif
+
+#define EXITNOTOK if (!Ok()) return
+#define SETHR(o) hr = o.GetHr(); EXITNOTOK
+
 
 using namespace Microsoft::WRL;
