@@ -110,24 +110,14 @@ int WINAPI wWinMain(
         { 0.25f, -0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
         { -0.25f, -0.25f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f }
     };
-    //ComPtr<ID3D12Resource2> vertBuffer;
-    //CD3DX12_HEAP_PROPERTIES heapProps(D3D12_HEAP_TYPE_UPLOAD);
-    //D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
-    //auto desc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(verts));
-    //device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_GENERIC_READ, NULL, IID_PPV_ARGS(&vertBuffer));
-    //UINT8* pGpuBuf;
-    //CD3DX12_RANGE readRange(0, 0);
-    //vertBuffer->Map(0, &readRange, reinterpret_cast<void**>(&pGpuBuf));
-    //memcpy(pGpuBuf, verts, sizeof(verts));
-    //vertBuffer->Unmap(0, NULL);
-    //vertexBufferView.BufferLocation = vertBuffer->GetGPUVirtualAddress();
-    //vertexBufferView.SizeInBytes = sizeof(verts);
-    //vertexBufferView.StrideInBytes = sizeof(Vertex);
+
     Fence fence(device.Get());
     fence.value++;
+
     ConstantVertexBuffer vBuf(device.Get(), sizeof(verts), sizeof(Vertex));
     vBuf.Copy(device.Get(), list.Get(), reinterpret_cast<BYTE*>(verts));
     list->Close();
+
     D3D12_VERTEX_BUFFER_VIEW view = vBuf.GetView();
     
     ID3D12CommandList* ppLists[] = { list.Get() };
@@ -139,25 +129,22 @@ int WINAPI wWinMain(
         fence.SetEvent();
         WaitForSingleObject(fence.event, INFINITE);
     }
+    list.ResetCurrent();
+    list.ResetList(pso.Get());
 
     vBuf.ReleaseTemp();
-    list.Reset();
-
-    // TEMP END
+    
 
     UINT frameIndex = 0;
     
 
-
-
     D3D12_VIEWPORT viewport(0.0f, 0.0f, 800.0f, 600.0f);
     D3D12_RECT scissorRect(0, 0, 800, 600);
 
-
     MSG msg = {};
     while (GetMessage(&msg, 0/*window.GetHWND()*/, 0, 0) > 0) {
-            fence.value++;
-            list.Switch(pso.Get());
+
+
             list->SetGraphicsRootSignature(rs.Get());
             list->RSSetViewports(1, &viewport);
             list->RSSetScissorRects(1, &scissorRect);
@@ -174,29 +161,26 @@ int WINAPI wWinMain(
             list->ResourceBarrier(1, &barrier);
             list->Close();
 
-            ID3D12CommandList* ppLists[] = { list.Get() };
-            queue->ExecuteCommandLists(1, ppLists);
-
-            swapChain->Present(1, 0);
-            HRESULT hr = queue->Signal(fence.Get(), fence.value);
-
+            
 
             if (fence->GetCompletedValue() < fence.value) {
                 fence.SetEvent();
                 WaitForSingleObject(fence.event, INFINITE);
             }
-
-            
-
-
-            frameIndex = swapChain->GetCurrentBackBufferIndex();
             list.Reset();
+            fence.value++;
+
+            ID3D12CommandList* ppLists[] = { list.Get() };
+            queue->ExecuteCommandLists(1, ppLists);
+            swapChain->Present(1, 0);
+            frameIndex = swapChain->GetCurrentBackBufferIndex();
+            queue->Signal(fence.Get(), fence.value);
+            list.Switch(pso.Get());
 
             TranslateMessage(&msg);
             DispatchMessage(&msg);
     }
-    int completed = fence->GetCompletedValue();
-    if (completed < fence.value) {
+    if (fence->GetCompletedValue() < fence.value) {
         fence.SetEvent();
         WaitForSingleObject(fence.event, INFINITE);
     }

@@ -14,5 +14,7 @@ public:
 	ID3D12GraphicsCommandList7* Get();
 	void Switch(ID3D12PipelineState* pso); // Reset list, Switch allocator
 	void Reset(); // Reset the opposite allocator, No switch
+	void ResetCurrent(); // Reset current allocator
+	void ResetList(ID3D12PipelineState* pso); // Reset list without switching
 };
 

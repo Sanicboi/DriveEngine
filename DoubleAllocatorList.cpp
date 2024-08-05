@@ -41,3 +41,13 @@ void DoubleAllocatorList::Reset()
 {
 	hr = allocators[!current]->Reset();
 }
+
+void DoubleAllocatorList::ResetCurrent()
+{
+	hr = allocators[current]->Reset();
+}
+
+void DoubleAllocatorList::ResetList(ID3D12PipelineState* pso)
+{
+	hr = list->Reset(allocators[current].Get(), pso);
+}
