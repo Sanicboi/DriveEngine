@@ -24,5 +24,5 @@ void ConstantIndexOrVertexBuffer::Copy(ID3D12Device10* device, ID3D12GraphicsCom
 
 void ConstantIndexOrVertexBuffer::ReleaseTemp()
 {
-	tempBuffer.~ComPtr();
+	tempBuffer.Reset();
 }

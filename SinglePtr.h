@@ -19,4 +19,7 @@ public:
 	T* Get() {
 		return ptr.Get();
 	}
+	~SinglePtr() {
+
+	}
 };

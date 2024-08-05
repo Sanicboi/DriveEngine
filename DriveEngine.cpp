@@ -177,7 +177,9 @@ int WINAPI wWinMain(
             ID3D12CommandList* ppLists[] = { list.Get() };
             queue->ExecuteCommandLists(1, ppLists);
 
+            swapChain->Present(1, 0);
             HRESULT hr = queue->Signal(fence.Get(), fence.value);
+
 
             if (fence->GetCompletedValue() < fence.value) {
                 fence.SetEvent();
@@ -186,7 +188,7 @@ int WINAPI wWinMain(
 
             
 
-            swapChain->Present(1, 0);
+
             frameIndex = swapChain->GetCurrentBackBufferIndex();
             list.Reset();
 
@@ -198,8 +200,6 @@ int WINAPI wWinMain(
         fence.SetEvent();
         WaitForSingleObject(fence.event, INFINITE);
     }
-    queue.~CommandQueue();
-    swapChain.~SwapChain();
     CoUninitialize();
     return 0;
 }

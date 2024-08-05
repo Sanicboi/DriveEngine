@@ -13,6 +13,3 @@ SwapChain::SwapChain(IDXGIFactory7* factory, ID3D12CommandQueue* queue, HWND hwn
 	}
 }
 
-SwapChain::~SwapChain()
-{
-}
