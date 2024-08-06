@@ -20,6 +20,17 @@ HRESULT ShaderCompiler::Compile(LPCWSTR entry, LPCWSTR model, LPCWSTR source, ID
 	arguments.push_back(L"-T");
 	arguments.push_back(model);
 
+	
+	arguments.push_back(L"-Qstrip_debug");
+#ifdef _DEBUG
+	arguments.push_back(L"-Od");
+#endif // _DEBUG
+
+	//arguments.push_back(L"-Qstrip_reflect");
+
+	arguments.push_back(DXC_ARG_DEBUG);
+
+
 	ComPtr<ID3DBlob> src;
 	D3DReadFileToBlob(source, &src);
 
@@ -43,7 +54,10 @@ HRESULT ShaderCompiler::Compile(LPCWSTR entry, LPCWSTR model, LPCWSTR source, ID
 				OutputDebugStringA((LPCSTR)errs->GetBufferPointer());
 				OutputDebugStringA("\n");
 			}
-
+				ComPtr<ID3DBlob> pDebugData;
+				ComPtr<IDxcBlobUtf16> pDebugDataPath;
+				result->GetOutput(DXC_OUT_PDB, IID_PPV_ARGS(pDebugData.GetAddressOf()), pDebugDataPath.GetAddressOf());
+				D3DWriteBlobToFile(pDebugData.Get(), (std::wstring(model) + L".pdb").c_str(), TRUE);
 #endif
 			result->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(out), NULL);
 		}

@@ -45,7 +45,12 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	}
 
 	list = DoubleAllocatorList(device.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT, false);
-	rs = RootSignature(device.Get(), 0, NULL, 0, NULL, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT, D3D_ROOT_SIGNATURE_VERSION_1);
+	D3D12_ROOT_PARAMETER params[1] = {};
+	params[0].Descriptor.RegisterSpace = 0;
+	params[0].Descriptor.ShaderRegister = 0;
+	params[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+	params[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rs = RootSignature(device.Get(), 1, params, 0, NULL, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT | D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED, D3D_ROOT_SIGNATURE_VERSION_1);
 
 	VertexShader vs(L"Vertex.hlsl", &compiler);
 	PixelShader ps(L"Pixel.hlsl", &compiler);
@@ -77,23 +82,66 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	pso = PSO(&psoDesc, device.Get());
 
 	Vertex verts[] = {
-	{ -0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	{  0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	{ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
-	{  0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f },
+		// front face
+		{ -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{  0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
 
-	// second quad (further from camera, green)
-	{ -0.75f,  0.75f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f },
-	{   0.0f,  0.0f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f },
-	{ -0.75f,  0.0f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f },
-	{   0.0f,  0.75f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f }
+		// right side face
+		{  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+		{  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{  0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+
+		// left side face
+		{ -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+
+		// back face
+		{  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{ -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+		{  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+
+		// top face
+		{ -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{ 0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+		{ 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+
+		// bottom face
+		{  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+		{  0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
 	};
 
 	UINT indices[] = {
-	0, 1, 2, // first triangle
+			0, 1, 2, // first triangle
 	0, 3, 1, // second triangle
-	4, 5, 6,
-	4, 7, 5
+
+	// left face
+	4, 5, 6, // first triangle
+	4, 7, 5, // second triangle
+
+	// right face
+	8, 9, 10, // first triangle
+	8, 11, 9, // second triangle
+
+	// back face
+	12, 13, 14, // first triangle
+	12, 15, 13, // second triangle
+
+	// top face
+	16, 17, 18, // first triangle
+	16, 19, 17, // second triangle
+
+	// bottom face
+	20, 21, 22, // first triangle
+	20, 23, 21, // second triangle
 	};
 
 	fence = Fence(device.Get());
@@ -124,6 +172,16 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	viewport = D3D12_VIEWPORT(0.0f, 0.0f, 800.0f, 600.0f);
 	scissorRect = D3D12_RECT(0, 0, 800, 600);
 	
+	camera = Camera(0.0f, 0.0f, -10.0f, width, height, 60.0f);
+	matrixBuffer = ConstantCommittedBuffer(device.Get(), sizeof(XMFLOAT4X4) * 4);
+	XMFLOAT4X4 matrices[3] = {
+		//camera.GetViewMatrix(),
+		//camera.GetProjectionMatrix()
+	};
+	float* pData;
+	matrixBuffer.Map(reinterpret_cast<void**>(&pData));
+	memcpy(pData, matrices, sizeof(matrices));
+	matrixBuffer.Unmap();
 	ready = true;
 }
 
@@ -143,13 +201,36 @@ void Application::OnRender()
 		list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		list->IASetVertexBuffers(0, 1, &vertexBufferView);
 		list->IASetIndexBuffer(&indexBufferView);
-		list->DrawIndexedInstanced(12, 1, 0, 0, 0);
+		list->SetGraphicsRootConstantBufferView(0, matrixBuffer.GetAddress());
+		list->DrawIndexedInstanced(36, 1, 0, 0, 0);
 		barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 		list->ResourceBarrier(1, &barrier);
 		list->Close();
 
 
 		Wait();
+		camera.UpdateMatrices();
+		XMFLOAT4X4 view = camera.GetViewMatrix();
+		XMFLOAT4X4 proj = camera.GetProjectionMatrix();
+		XMFLOAT4X4 matrices[3] = {
+		};
+
+
+		XMStoreFloat4x4(&matrices[0], XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&matrices[1], 
+			XMLoadFloat4x4(&view)
+		);
+		XMStoreFloat4x4(&matrices[2], 
+			XMLoadFloat4x4(&proj)
+		);
+		//XMStoreFloat4x4(&matrices[0], XMMatrixIdentity());
+		//XMStoreFloat4x4(&matrices[1], XMMatrixIdentity());
+		//XMStoreFloat4x4(&matrices[2], XMMatrixIdentity());
+		float* pData;
+		matrixBuffer.Map(reinterpret_cast<void**>(&pData));
+		memcpy(pData, matrices, sizeof(matrices));
+		matrixBuffer.Unmap();
+
 		list.Reset();
 		fence.value++;
 
@@ -192,7 +273,7 @@ void Application::OnResize(UINT w, UINT h)
 		dsBuffer.Resize(device.Get(), w, h);
 		rtvHeap.ResetCpuHandle(0);
 		swapChain->ResizeBuffers(0, w, h, DXGI_FORMAT_UNKNOWN, 0);
-
+		camera.Resize(w, h);
 		for (int i = 0; i < 3; i++) {
 			swapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargets[i]));
 			device->CreateRenderTargetView(renderTargets[i].Get(), NULL, rtvHeap.cpuHandle);

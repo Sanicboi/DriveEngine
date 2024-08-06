@@ -136,8 +136,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CommandAllocator.cpp" />
     <ClCompile Include="CommandList.cpp" />
+    <ClCompile Include="ConstantCommittedBuffer.cpp" />
     <ClCompile Include="ConstantIndexBuffer.cpp" />
     <ClCompile Include="ConstantIndexOrVertexBuffer.cpp" />
     <ClCompile Include="ConstantVertexBuffer.cpp" />
@@ -162,8 +164,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CommandAllocator.h" />
     <ClInclude Include="CommandList.h" />
+    <ClInclude Include="ConstantCommittedBuffer.h" />
     <ClInclude Include="ConstantIndexBuffer.h" />
     <ClInclude Include="ConstantIndexOrVertexBuffer.h" />
     <ClInclude Include="ConstantVertexBuffer.h" />
