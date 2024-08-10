@@ -15,6 +15,9 @@
 #include "DepthStencilBuffer.h"
 #include "Camera.h"
 #include "ConstantCommittedBuffer.h"
+#include "Timer.h"
+#include "DirectXTK12/Inc/Mouse.h"
+#include "Output.h"
 
 
 struct Vertex {
@@ -33,6 +36,7 @@ class Application : public Hresultable
 private:
 	DXGIContext context;
 	Device device;
+    Output output;
     CommandQueue queue;
     SwapChain swapChain;
     DescriptorHeap rtvHeap;
@@ -58,15 +62,25 @@ private:
 
     Camera camera;
     ConstantCommittedBuffer matrixBuffer;
+    Timer timer;
+    float deltaT;
+    std::unique_ptr<Mouse> mouse = std::make_unique<Mouse>();
+    
 
     bool ready = false;
+
 public:
+    bool running = true;
     Application(LPCWSTR name, HINSTANCE hInstance, int param);
     void Init(LPCWSTR name, HINSTANCE hInstance, int param);
     void OnRender();
     void Wait();
     void Signal();
     void OnResize(UINT w, UINT h);
+    void OnKeyDown(UINT key);
+    void OnMouseMove(LPARAM param);
+    bool IsKeyPressed(UINT key);
     static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    
 };
 

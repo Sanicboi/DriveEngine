@@ -81,7 +81,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;dxguid.lib;$(solutionDir)\DirectXTK12\Bin\Desktop_2022_Win10\x64\Debug\DirectXTK12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,7 +99,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;dxguid.lib;$(solutionDir)\DirectXTK12\Bin\Desktop_2022_Win10\x64\Debug\DirectXTK12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,7 +113,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;dxguid.lib;$(solutionDir)\DirectXTK12\Bin\Desktop_2022_Win10\x64\Debug\DirectXTK12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,7 +131,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;d3d12.lib;dxcompiler.lib;d3dcompiler.lib;dxguid.lib;$(solutionDir)\DirectXTK12\Bin\Desktop_2022_Win10\x64\Debug\DirectXTK12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -153,6 +153,7 @@
     <ClCompile Include="DXGIContext.cpp" />
     <ClCompile Include="Fence.cpp" />
     <ClCompile Include="Hresultable.cpp" />
+    <ClCompile Include="Output.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PSO.cpp" />
     <ClCompile Include="RootSignature.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="SinglePtr.cpp" />
     <ClCompile Include="SwapChain.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +184,7 @@
     <ClInclude Include="Fence.h" />
     <ClInclude Include="Hresultable.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Output.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PSO.h" />
     <ClInclude Include="RootSignature.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="ShaderCompiler.h" />
     <ClInclude Include="SinglePtr.h" />
     <ClInclude Include="SwapChain.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,33 +1,37 @@
 #pragma once
 #include "Main.h"
 
+enum CAMERA_MOVEMENT {
+	W = 1,
+	S = 2,
+	A = 3,
+	D = 4
+};
+
+const XMVECTORF32 START_POSITION = { 0.f, -1.5f, 0.f, 0.f };
+constexpr float ROTATION_GAIN = 0.4f;
+constexpr float MOVEMENT_GAIN = 5.0f;
+
 class Camera
 {
 private:
+	float pitch;
+	float yaw = XM_PI;
 	XMFLOAT4X4 view;
-	XMFLOAT4X4 projection;
-	XMFLOAT4 position;
-	XMFLOAT4 target = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	XMFLOAT4 up = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
-	float pitch = 0.0f;
-	float yaw = 0.0f;
-	float roll = 0.0f;
-	float sensitivity = 0.1f;
-	float speed = 5.0f;
-	UINT width, height;
-	float zN, zF;
-	float fov;
+	XMFLOAT4X4 proj;
+	XMFLOAT3 pos = { 0.0f, 0.0f, -10.0f };
+	XMFLOAT3 front = { 0.0f, 0.0f, 1.0f };
+	XMFLOAT3 left = { -1.0f, 0.0f, 0.0f };
+	XMFLOAT3 up = { 0.0f, 1.0f, 0.0f };
 public:
-	Camera(float x = 0.0f, float y = 0.0f, float z = 3.0f, UINT w = 800, UINT h = 600, float f = 45.0f, float zNear = 0.1f, float zFar = 1000.0f);
-	void Move(float x, float y, float z);
-	void MoveX(float x);
-	void MoveY(float y);
-	void MoveZ(float z);
-	void SetPosition(float x, float y, float z);
+	Camera();
+	Camera(UINT w, UINT h);
 	XMFLOAT4X4 GetViewMatrix() const;
 	XMFLOAT4X4 GetProjectionMatrix() const;
-	void Turn(float deltaX, float deltaY, float deltaZ);
-	void UpdateMatrices();
+	void Turn(float deltaX, float deltaY);
+	void Move(float deltaT, CAMERA_MOVEMENT type);
+	void Update();
+	void UpdateVectors();
 	void Resize(UINT w, UINT h);
 };
 

@@ -6,6 +6,6 @@ private:
 	ComPtr<IDXGISwapChain1> tmp;
 public:
 	using Described::Described;
-	SwapChain(IDXGIFactory7* factory, ID3D12CommandQueue* queue, HWND hwnd);
+	SwapChain(IDXGIFactory7* factory, ID3D12CommandQueue* queue, HWND hwnd, UINT width, UINT height);
 };
 

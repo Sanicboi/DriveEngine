@@ -10,6 +10,13 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	context = DXGIContext();
 	device = Device(context.Adapter());
 	queue = CommandQueue(device.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT);
+	output = Output(context.Adapter());
+
+	UINT numModes;
+	output->GetDisplayModeList1(DXGI_FORMAT_R8G8B8A8_UNORM, 0, &numModes, NULL);
+
+	DXGI_MODE_DESC* descs = new DXGI_MODE_DESC[numModes];
+	output->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, 0, &numModes, descs);
 
 
 	const LPCWSTR className = (std::wstring(name) + L" Window").c_str();
@@ -19,22 +26,31 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	wc.lpszClassName = className;
 	RegisterClass(&wc);
 
+	width = descs[numModes - 1].Width;
+	height = descs[numModes - 1].Height;
+
 	hwnd = CreateWindowExW(
 		0,
 		className,
 		name,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		800, 600,
+		width, height,
 		NULL, NULL, hInstance, this
 	);
 
-	width = 800;
-	height = 600;
+	
 
-	ShowWindow(hwnd, param);
 
-	swapChain = SwapChain(context.Factory(), queue.Get(), hwnd);
+	ShowWindow(hwnd, SW_MAXIMIZE);
+
+	swapChain = SwapChain(context.Factory(), queue.Get(), hwnd, width, height);
+
+	//swapChain->ResizeTarget(&descs[numModes - 1]);
+	mouse->SetWindow(hwnd);
+	mouse->SetMode(Mouse::MODE_RELATIVE);
+
+	delete[] descs;
 
 	rtvHeap = DescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 3, false, device.Get(), true, false);
 
@@ -89,16 +105,16 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 		{  0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
 
 		// right side face
-		{  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
 		{  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
 		{  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f },
 		{  0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
 
 		// left side face
 		{ -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-		{ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
 		{ -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f },
-		{ -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+		{ -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
 
 		// back face
 		{  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
@@ -114,13 +130,13 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 
 		// bottom face
 		{  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-		{ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
-		{  0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
 		{ -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
 	};
 
 	UINT indices[] = {
-			0, 1, 2, // first triangle
+	0, 1, 2, // first triangle
 	0, 3, 1, // second triangle
 
 	// left face
@@ -145,6 +161,7 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	};
 
 	fence = Fence(device.Get());
+
 	dsBuffer = DepthStencilBuffer(device.Get(), width, height);
 	vertexBuffer = ConstantVertexBuffer(device.Get(), sizeof(verts), sizeof(Vertex));
 	indexBuffer = ConstantIndexBuffer(device.Get(), sizeof(indices));
@@ -169,10 +186,11 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	vertexBuffer.ReleaseTemp();
 	indexBuffer.ReleaseTemp();
 
-	viewport = D3D12_VIEWPORT(0.0f, 0.0f, 800.0f, 600.0f);
-	scissorRect = D3D12_RECT(0, 0, 800, 600);
+	viewport = D3D12_VIEWPORT(0.0f, 0.0f, (float)width, (float)height);
+	scissorRect = D3D12_RECT(0, 0, width, height);
 	
-	camera = Camera(0.0f, 0.0f, -10.0f, width, height, 60.0f);
+	camera = Camera(width, height);
+	camera.Update();
 	matrixBuffer = ConstantCommittedBuffer(device.Get(), sizeof(XMFLOAT4X4) * 4);
 	XMFLOAT4X4 matrices[3] = {
 		//camera.GetViewMatrix(),
@@ -182,11 +200,14 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	matrixBuffer.Map(reinterpret_cast<void**>(&pData));
 	memcpy(pData, matrices, sizeof(matrices));
 	matrixBuffer.Unmap();
+	timer.Reset();
 	ready = true;
 }
 
 void Application::OnRender()
 {
+	deltaT = timer.GetDeltaT();
+	timer.Reset();
 	if (ready) {
 		list->SetGraphicsRootSignature(rs.Get());
 		list->RSSetViewports(1, &viewport);
@@ -209,7 +230,33 @@ void Application::OnRender()
 
 
 		Wait();
-		camera.UpdateMatrices();
+
+		auto state = mouse->GetState();
+		camera.Turn(state.x, state.y);
+
+
+		if (IsKeyPressed('W')) {
+			camera.Move(deltaT, W);
+		}
+		if (IsKeyPressed('S')) {
+			camera.Move(deltaT, S);
+		}
+		if (IsKeyPressed('A')) {
+			camera.Move(deltaT, A);
+		}
+		if (IsKeyPressed('D')) {
+			camera.Move(deltaT, D);
+		}
+		if (IsKeyPressed(VK_ESCAPE)) {
+			running = false;
+			return;
+		}
+
+
+
+
+		
+		camera.Update();
 		XMFLOAT4X4 view = camera.GetViewMatrix();
 		XMFLOAT4X4 proj = camera.GetProjectionMatrix();
 		XMFLOAT4X4 matrices[3] = {
@@ -218,14 +265,11 @@ void Application::OnRender()
 
 		XMStoreFloat4x4(&matrices[0], XMMatrixTranspose(XMMatrixIdentity()));
 		XMStoreFloat4x4(&matrices[1], 
-			XMLoadFloat4x4(&view)
+			XMMatrixTranspose(XMLoadFloat4x4(&view))
 		);
 		XMStoreFloat4x4(&matrices[2], 
-			XMLoadFloat4x4(&proj)
+			XMMatrixTranspose(XMLoadFloat4x4(&proj))
 		);
-		//XMStoreFloat4x4(&matrices[0], XMMatrixIdentity());
-		//XMStoreFloat4x4(&matrices[1], XMMatrixIdentity());
-		//XMStoreFloat4x4(&matrices[2], XMMatrixIdentity());
 		float* pData;
 		matrixBuffer.Map(reinterpret_cast<void**>(&pData));
 		memcpy(pData, matrices, sizeof(matrices));
@@ -236,9 +280,9 @@ void Application::OnRender()
 
 		ID3D12CommandList* ppLists[] = { list.Get() };
 		queue->ExecuteCommandLists(1, ppLists);
-		swapChain->Present(1, 0);
-		frameIndex = swapChain->GetCurrentBackBufferIndex();
 		Signal();
+		swapChain->Present(0, 0);
+		frameIndex = swapChain->GetCurrentBackBufferIndex();
 		list.Switch(pso.Get());
 	}
 	
@@ -257,9 +301,14 @@ void Application::Signal()
 	queue->Signal(fence.Get(), fence.value);
 }
 
+
+
+
+
 void Application::OnResize(UINT w, UINT h)
 {
 	if (ready) {
+		Signal();
 		Wait();
 
 		width = w;
@@ -284,6 +333,22 @@ void Application::OnResize(UINT w, UINT h)
 	}
 }
 
+void Application::OnKeyDown(UINT key)
+{
+}
+
+void Application::OnMouseMove(LPARAM param)
+{
+
+
+}
+
+bool Application::IsKeyPressed(UINT key)
+{
+	short result = GetKeyState(key);
+	return ((unsigned short)result) >> 15;
+}
+
 LRESULT Application::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	Application* app = reinterpret_cast<Application*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
@@ -295,18 +360,35 @@ LRESULT Application::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pCreateStruct->lpCreateParams));
 			return 0;
 		}
-		case WM_PAINT:
-			if (app != NULL) {
-				app->OnRender();
-			}
-			return 0;
 		case WM_SIZE:
 		{
-			UINT width = LOWORD(lParam);
-			UINT height = HIWORD(lParam);
-			app->OnResize(width, height);
+			if (app != NULL && app->running) {
+				UINT w = LOWORD(lParam);
+				UINT h = HIWORD(lParam);
+				app->OnResize(w, h);
+			}
 			return 0;
 		}
+		case WM_KEYDOWN:
+			if (app != NULL) {
+				app->OnKeyDown(wParam);
+			}
+			return 0;
+		case WM_ACTIVATE:
+		case WM_INPUT:
+		case WM_MOUSEMOVE:
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_MBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_MOUSEWHEEL:
+		case WM_XBUTTONDOWN:
+		case WM_XBUTTONUP:
+		case WM_MOUSEHOVER:
+			Mouse::ProcessMessage(msg, wParam, lParam);
+			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
@@ -316,3 +398,4 @@ LRESULT Application::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
+
