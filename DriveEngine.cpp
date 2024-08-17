@@ -8,7 +8,7 @@ int WINAPI wWinMain(
     _In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE prev, 
     _In_ PWSTR cmdLine,
-    _In_ int nCmdShow
+    _In_ int32_t nCmdShow
 ) 
 {
     CoInitialize(NULL);

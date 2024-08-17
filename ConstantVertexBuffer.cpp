@@ -1,6 +1,6 @@
 #include "ConstantVertexBuffer.h"
 
-ConstantVertexBuffer::ConstantVertexBuffer(ID3D12Device10* device, UINT size, UINT stride) : ConstantIndexOrVertexBuffer(device, size, stride)
+ConstantVertexBuffer::ConstantVertexBuffer(ID3D12Device10* device, uint64_t size, uint8_t stride) : ConstantIndexOrVertexBuffer(device, size, stride)
 {
 	if (Ok()) {
 		view.BufferLocation = ptr->GetGPUVirtualAddress();
@@ -15,7 +15,7 @@ void ConstantVertexBuffer::Copy(ID3D12Device10* device, ID3D12GraphicsCommandLis
 }
 
 
-D3D12_VERTEX_BUFFER_VIEW ConstantVertexBuffer::GetView() const
+D3D12_VERTEX_BUFFER_VIEW* ConstantVertexBuffer::GetView() 
 {
-	return view;
+	return &view;
 }

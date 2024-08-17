@@ -19,8 +19,6 @@
 #include <string>
 #include <vector>
 #include <chrono>
-#include <io.h>
-#include <fcntl.h>
 #include <iostream>
 
 #ifdef _DEBUG 
@@ -35,4 +33,5 @@
 
 using namespace Microsoft::WRL;
 using namespace DirectX;
-using namespace DirectX::PackedVector;
+
+#include "Types.h"

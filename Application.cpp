@@ -163,16 +163,18 @@ void Application::Init(LPCWSTR name, HINSTANCE hInstance, int param)
 	fence = Fence(device.Get());
 
 	dsBuffer = DepthStencilBuffer(device.Get(), width, height);
-	vertexBuffer = ConstantVertexBuffer(device.Get(), sizeof(verts), sizeof(Vertex));
-	indexBuffer = ConstantIndexBuffer(device.Get(), sizeof(indices));
 
-	vertexBuffer.Copy(device.Get(), list.Get(), reinterpret_cast<BYTE*>(verts));
-	indexBuffer.Copy(device.Get(), list.Get(), reinterpret_cast<BYTE*>(indices));
+	batcher.Add(reinterpret_cast<float*>(verts), _countof(verts), indices, _countof(indices));
+
+	//vertexBuffer = ConstantVertexBuffer(device.Get(), sizeof(verts), sizeof(Vertex));
+	//indexBuffer = ConstantIndexBuffer(device.Get(), sizeof(indices));
+
+	//vertexBuffer.Copy(device.Get(), list.Get(), reinterpret_cast<BYTE*>(verts));
+	//indexBuffer.Copy(device.Get(), list.Get(), reinterpret_cast<BYTE*>(indices));
+	batcher.Upload(device.Get(), list.Get());
+	
 
 	list->Close();
-
-	indexBufferView = indexBuffer.GetView();
-	vertexBufferView = vertexBuffer.GetView();
 
 	ID3D12CommandList* ppLists[] = { list.Get() };
 	queue->ExecuteCommandLists(1, ppLists);
@@ -209,6 +211,7 @@ void Application::OnRender()
 	deltaT = timer.GetDeltaT();
 	timer.Reset();
 	if (ready) {
+		batcher.Reset();
 		list->SetGraphicsRootSignature(rs.Get());
 		list->RSSetViewports(1, &viewport);
 		list->RSSetScissorRects(1, &scissorRect);
@@ -220,10 +223,12 @@ void Application::OnRender()
 		const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
 		list->ClearRenderTargetView(rtvHeap.cpuHandle, clearColor, 0, NULL);
 		list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		list->IASetVertexBuffers(0, 1, &vertexBufferView);
-		list->IASetIndexBuffer(&indexBufferView);
 		list->SetGraphicsRootConstantBufferView(0, matrixBuffer.GetAddress());
-		list->DrawIndexedInstanced(36, 1, 0, 0, 0);
+		//list->IASetVertexBuffers(0, 1, &vertexBufferView);
+		//list->IASetIndexBuffer(&indexBufferView);
+
+		//list->DrawIndexedInstanced(36, 1, 0, 0, 0);
+		batcher.DrawCall(list.Get());
 		barrier = CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 		list->ResourceBarrier(1, &barrier);
 		list->Close();

@@ -18,6 +18,7 @@
 #include "Timer.h"
 #include "DirectXTK12/Inc/Mouse.h"
 #include "Output.h"
+#include "StaticBatcher.h"
 
 
 struct Vertex {
@@ -59,6 +60,8 @@ private:
     D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
     D3D12_INDEX_BUFFER_VIEW indexBufferView;
 
+
+    StaticBatcher batcher = StaticBatcher(0, sizeof(Vertex));
 
     Camera camera;
     ConstantCommittedBuffer matrixBuffer;

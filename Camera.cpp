@@ -2,23 +2,23 @@
 
 
 
-Camera::Camera(UINT w, UINT h) : pitch(0.0f), yaw(90.0f)
+Camera::Camera(uint16_t w, uint16_t h) : pitch(0.0f), yaw(90.0f)
 {
-	XMStoreFloat4x4(
-		&proj,
-		XMMatrixPerspectiveFovLH(
-			XMConvertToRadians(70.0f),
-			(float)w / (float)h,
-			0.01f, 100.0f
-		)
-	);
-	Update();
+	if (w > 0 && h > 0) {
+		XMStoreFloat4x4(
+			&proj,
+			XMMatrixPerspectiveFovLH(
+				XMConvertToRadians(70.0f),
+				(float)w / (float)h,
+				0.01f, 100.0f
+			)
+		);
+		Update();
+	}
+
 }
 
 
-Camera::Camera()
-{
-}
 
 
 XMFLOAT4X4 Camera::GetViewMatrix() const
@@ -100,7 +100,7 @@ void Camera::Update()
 }
 
 
-void Camera::Resize(UINT w, UINT h) {
+void Camera::Resize(uint16_t w, uint16_t h) {
 	XMStoreFloat4x4(
 		&proj,
 		XMMatrixPerspectiveFovLH(

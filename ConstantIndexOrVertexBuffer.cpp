@@ -1,6 +1,6 @@
 #include "ConstantIndexOrVertexBuffer.h"
 
-ConstantIndexOrVertexBuffer::ConstantIndexOrVertexBuffer(ID3D12Device10* device, UINT size, UINT stride) : desc(CD3DX12_RESOURCE_DESC::Buffer(size))
+ConstantIndexOrVertexBuffer::ConstantIndexOrVertexBuffer(ID3D12Device10* device, uint64_t size, uint8_t stride) : desc(CD3DX12_RESOURCE_DESC::Buffer(size))
 {
 	hr = device->CreateCommittedResource(&bufferHeapProperties, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_COMMON, NULL, IID_PPV_ARGS(&ptr));
 }

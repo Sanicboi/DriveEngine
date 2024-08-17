@@ -1,6 +1,6 @@
 #include "DescriptorHeap.h"
 
-DescriptorHeap::DescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors, bool shaderVisible, ID3D12Device10* device, bool createCpuHandle, bool createGpuHandle)
+DescriptorHeap::DescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, uint16_t numDescriptors, bool shaderVisible, ID3D12Device10* device, bool createCpuHandle, bool createGpuHandle)
 {
 	descriptor.Type = type;
 	descriptor.NumDescriptors = numDescriptors;
@@ -35,7 +35,7 @@ bool DescriptorHeap::HasGpu() const
 	return hasGpu;
 }
 
-void DescriptorHeap::ResetCpuHandle(UINT offset = 0)
+void DescriptorHeap::ResetCpuHandle(uint16_t offset = 0)
 {
 	cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(ptr->GetCPUDescriptorHandleForHeapStart(), offset, size);
 }

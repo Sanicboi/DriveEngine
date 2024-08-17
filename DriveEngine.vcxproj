@@ -160,6 +160,8 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="SinglePtr.cpp" />
+    <ClCompile Include="StaticBatch.cpp" />
+    <ClCompile Include="StaticBatcher.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -191,8 +193,11 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCompiler.h" />
     <ClInclude Include="SinglePtr.h" />
+    <ClInclude Include="StaticBatch.h" />
+    <ClInclude Include="StaticBatcher.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Types.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>

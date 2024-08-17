@@ -135,25 +135,31 @@
     <ClCompile Include="PSO.cpp">
       <Filter>Source Files\D3D12\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="ConstantIndexBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DepthStencilBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\D3D12\Advanced</Filter>
     </ClCompile>
     <ClCompile Include="ConstantCommittedBuffer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\D3D12\Advanced</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ConstantIndexBuffer.cpp">
+      <Filter>Source Files\D3D12\Advanced</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencilBuffer.cpp">
+      <Filter>Source Files\D3D12\Advanced</Filter>
     </ClCompile>
     <ClCompile Include="Output.cpp">
+      <Filter>Source Files\DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -231,18 +237,27 @@
       <Filter>Header Files\D3D12\Advanced</Filter>
     </ClInclude>
     <ClInclude Include="DepthStencilBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\D3D12\Advanced</Filter>
     </ClInclude>
     <ClInclude Include="ConstantCommittedBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\D3D12\Advanced</Filter>
     </ClInclude>
     <ClInclude Include="Output.h">
+      <Filter>Header Files\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\D3D12\Advanced</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticBatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticBatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

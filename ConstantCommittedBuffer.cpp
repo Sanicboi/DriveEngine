@@ -1,6 +1,6 @@
 #include "ConstantCommittedBuffer.h"
 
-ConstantCommittedBuffer::ConstantCommittedBuffer(ID3D12Device10* device, UINT size)
+ConstantCommittedBuffer::ConstantCommittedBuffer(ID3D12Device10* device, uint64_t size)
 {
 	auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	auto desc = CD3DX12_RESOURCE_DESC::Buffer(size);

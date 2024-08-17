@@ -1,7 +1,6 @@
 #include "DoubleAllocatorList.h"
 
 DoubleAllocatorList::DoubleAllocatorList(ID3D12Device10* device, D3D12_COMMAND_LIST_TYPE type, bool close)
-	/*: allocators{ CommandAllocator(device,type), CommandAllocator(device, type) }, list(device, type, allocators[current].Get(), NULL, close)*/
 {
 	allocators[0] = CommandAllocator(device, type);
 	allocators[1] = CommandAllocator(device, type);

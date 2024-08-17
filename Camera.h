@@ -24,14 +24,13 @@ private:
 	XMFLOAT3 left = { -1.0f, 0.0f, 0.0f };
 	XMFLOAT3 up = { 0.0f, 1.0f, 0.0f };
 public:
-	Camera();
-	Camera(UINT w, UINT h);
+	Camera(uint16_t w = 0, uint16_t h = 0);
 	XMFLOAT4X4 GetViewMatrix() const;
 	XMFLOAT4X4 GetProjectionMatrix() const;
 	void Turn(float deltaX, float deltaY);
 	void Move(float deltaT, CAMERA_MOVEMENT type);
 	void Update();
 	void UpdateVectors();
-	void Resize(UINT w, UINT h);
+	void Resize(uint16_t w, uint16_t h);
 };
 

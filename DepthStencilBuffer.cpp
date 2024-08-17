@@ -1,6 +1,6 @@
 #include "DepthStencilBuffer.h"
 
-DepthStencilBuffer::DepthStencilBuffer(ID3D12Device10* device, UINT width, UINT height)
+DepthStencilBuffer::DepthStencilBuffer(ID3D12Device10* device, uint16_t width, uint16_t height)
 {
 	heap = DescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false, device, true, false);
 	hr = heap.GetHr();
@@ -23,7 +23,7 @@ DepthStencilBuffer::DepthStencilBuffer(ID3D12Device10* device, UINT width, UINT 
 	}
 }
 
-void DepthStencilBuffer::Resize(ID3D12Device10* device, UINT w, UINT h)
+void DepthStencilBuffer::Resize(ID3D12Device10* device, uint16_t w, uint16_t h)
 {
 	buffer.Reset();
 	auto props = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
