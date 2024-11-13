@@ -165,6 +165,9 @@
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="WICFrame.cpp" />
+    <ClCompile Include="WICFrameDecoder.cpp" />
+    <ClCompile Include="WICImagingFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -199,6 +202,9 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="WICFrame.h" />
+    <ClInclude Include="WICFrameDecoder.h" />
+    <ClInclude Include="WICImagingFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Pixel.hlsl">

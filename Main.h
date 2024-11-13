@@ -9,6 +9,7 @@
 #include <wrl.h>
 
 #include <windowsx.h>
+#include <wincodec.h>
 
 #include <dxcapi.h>
 #include <d3dcompiler.h>

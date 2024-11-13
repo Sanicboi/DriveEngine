@@ -70,6 +70,9 @@
     <Filter Include="Source Files\D3D12\Shaders">
       <UniqueIdentifier>{4202d3b6-992a-4b8c-90df-52bc5528422b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ImageLoader">
+      <UniqueIdentifier>{15ee7811-5eb1-48ec-8389-8d5eed399be6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DriveEngine.cpp">
@@ -160,6 +163,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StaticBatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WICImagingFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WICFrameDecoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WICFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -258,6 +270,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WICImagingFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WICFrameDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WICFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
