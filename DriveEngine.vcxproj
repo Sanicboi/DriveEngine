@@ -159,15 +159,13 @@
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
+    <ClCompile Include="SimpleWICLoader.cpp" />
     <ClCompile Include="SinglePtr.cpp" />
     <ClCompile Include="StaticBatch.cpp" />
     <ClCompile Include="StaticBatcher.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
-    <ClCompile Include="WICFrame.cpp" />
-    <ClCompile Include="WICFrameDecoder.cpp" />
-    <ClCompile Include="WICImagingFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -195,6 +193,7 @@
     <ClInclude Include="RootSignature.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCompiler.h" />
+    <ClInclude Include="SimpleWICLoader.h" />
     <ClInclude Include="SinglePtr.h" />
     <ClInclude Include="StaticBatch.h" />
     <ClInclude Include="StaticBatcher.h" />
@@ -202,9 +201,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="VertexShader.h" />
-    <ClInclude Include="WICFrame.h" />
-    <ClInclude Include="WICFrameDecoder.h" />
-    <ClInclude Include="WICImagingFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Pixel.hlsl">

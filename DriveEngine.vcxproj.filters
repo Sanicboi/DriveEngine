@@ -165,13 +165,7 @@
     <ClCompile Include="StaticBatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WICImagingFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WICFrameDecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WICFrame.cpp">
+    <ClCompile Include="SimpleWICLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,13 +266,7 @@
     <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WICImagingFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WICFrameDecoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WICFrame.h">
+    <ClInclude Include="SimpleWICLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
